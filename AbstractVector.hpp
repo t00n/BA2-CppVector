@@ -7,23 +7,15 @@ template <typename T>
 class AbstractVector
 {
 public:
-	AbstractVector() : _values() {}
-	AbstractVector(const AbstractVector<T>& other) : _values() {}
-	AbstractVector& operator=(const AbstractVector<T>& other) {}
-	virtual ~AbstractVector()
+	AbstractVector(size_t N) : _LENGTH(N)
 	{}
 
-	template<T>
-	friend std::ostream& operator<<(std::ostream& os, AbstractVector<T>& vec);
-
-	template<T>
-	friend std::istream& operator>>(std::istream& is, AbstractVector<T>& vec);
-
+	// getters and setters
 	virtual T& operator[](size_t) = 0;
-	virtual size_t len() const = 0;
+	virtual size_t len() { return _LENGTH; }
 
 protected:
-	T _values[10];
+	const size_t _LENGTH;
 };
 
 template <typename T>
@@ -56,30 +48,51 @@ template <typename T>
 class AbstractValueVector : public AbstractVector<T>
 {
 public:
+	AbstractValueVector(size_t N) : AbstractVector<T>(N), _values(new T[N])
+	{}
+
+	~AbstractValueVector()
+	{
+		delete[] this->_values;
+	}
+
 	virtual T& operator[](size_t index)
 	{
 		return this->_values[index];
 	}
 
-	virtual size_t len() const
-	{
-		return sizeof(this->_values)/sizeof(T);
-	}
+protected:
+	T* _values;
 };
 
 template <typename T>
 class AbstractPointerVector : public AbstractVector<T>
 {
 public:
+	AbstractPointerVector(size_t N) : AbstractVector<T>(N), _values(new T*[N])
+	{
+		for (size_t i = 0; i < this->len(); ++i)
+		{
+			this->_values[i] = new T();
+		}
+	}
+
+	~AbstractPointerVector()
+	{
+		for (size_t i = 0; i < this->len(); ++i)
+		{
+			delete this->_values[i];
+		}
+		delete[] this->_values;
+	}
+
 	virtual T& operator[](size_t index)
 	{
 		return *(this->_values[index]);
 	}
-
-	virtual size_t len() const
-	{
-		return sizeof(this->_values)/sizeof(*(this->_values));
-	}
+	
+protected:
+	T** _values;
 };
 
 #endif // __ABSTRACT_VECTOR_HPP

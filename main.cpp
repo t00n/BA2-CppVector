@@ -3,17 +3,14 @@
 #include "Vector.hpp"
 using namespace std;
 
-
-
 int main()
 {
-	Vector<int, false> vectorInt;
+	Vector<int, true> vectorInt(10);
 	vectorInt[0] = 5;
 	cout << vectorInt.len() << endl;
 	cout << vectorInt;
-	Vector<char, false> vectorChar;
+	Vector<char, true> vectorChar(10);
 	vectorChar[0] = 'c';
-	cin >> vectorChar;
 	cout << vectorChar.len() << endl;
 	cout << vectorChar;
 	return EXIT_SUCCESS;
