@@ -12,7 +12,7 @@ public:
 
 	// getters and setters
 	virtual T& operator[](size_t) = 0;
-	virtual size_t len() { return _LENGTH; }
+	virtual size_t len() const { return _LENGTH; }
 
 protected:
 	const size_t _LENGTH;
@@ -51,6 +51,14 @@ public:
 	AbstractValueVector(size_t N) : AbstractVector<T>(N), _values(new T[N])
 	{}
 
+	AbstractValueVector(const AbstractVector<T>& other) : AbstractVector<T>(other.len()), _values(new T[other.len()])
+	{
+		for (size_t i = 0; i < this->len(); ++i)
+		{
+			this[i] = T(other[i]);
+		}
+	}
+
 	~AbstractValueVector()
 	{
 		delete[] this->_values;
@@ -77,6 +85,14 @@ public:
 		}
 	}
 
+	AbstractPointerVector(const AbstractVector<T>& other) : AbstractVector<T>(other.len()), _values(new T*[other.len()])
+	{
+		for (size_t i = 0; i < this->len(); ++i)
+		{
+			this->_values[i] = new T(other[i]);
+		}
+	}
+
 	~AbstractPointerVector()
 	{
 		for (size_t i = 0; i < this->len(); ++i)
@@ -86,11 +102,23 @@ public:
 		delete[] this->_values;
 	}
 
+	// AbstractPointerVector& operator=(const AbstractVector<T>& other)
+	// {
+	// 	if (&other != this and other.len() == this.len())
+	// 	{
+	// 		for (size_t i = 0; i < other.len(); ++i)
+	// 		{
+	// 			this[i] = other[i];
+	// 		}
+	// 	}
+	// 	return *this;
+	// }
+
 	virtual T& operator[](size_t index)
 	{
 		return *(this->_values[index]);
 	}
-	
+
 protected:
 	T** _values;
 };
