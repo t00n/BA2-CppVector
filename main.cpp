@@ -112,10 +112,20 @@ void conversions()
 	assert(vectorChar2[5] == 'A');
 }
 
+void vStatic()
+{
+	Vector<int, false> vector(10);
+	vector[0] = 5;
+	vector[5] = 6;
+	VectorStatic<int, false, 10> vectorStatic1(vector);
+	cout << vectorStatic1 << endl;
+}
+
 int main()
 {
 	constructors(); // Ok
 	operators();
 	conversions(); // Ok
+	vStatic();
 	return EXIT_SUCCESS;
 }

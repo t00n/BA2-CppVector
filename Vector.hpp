@@ -12,7 +12,12 @@ class Vector<T, false> : public AbstractVector<T>
 {
 public:
 	Vector(size_t len) : AbstractVector<T>(len), _data(new T[len])
-	{}
+	{
+		for (size_t i = 0; i < this->len(); ++i)
+		{
+			this->_data[i] = T();
+		}
+	}
 
 	// Constructor from Vector<T, ...> where T is any equivalent/convertible type
 	template <typename U>
@@ -255,6 +260,16 @@ class Vector<T*, true> : public Vector<T*, false>
 {
 public:
 	using Vector<T*, false>::Vector;
+};
+
+template <typename T, bool POINTER, size_t N>
+class VectorStatic : public Vector<T, POINTER>
+{
+public:
+	using Vector<T, POINTER>::Vector;
+	VectorStatic() : Vector<T, POINTER>(N)
+	{}
+
 };
 
 #endif // __VECTOR_HPP
