@@ -12,7 +12,7 @@ public:
 
 	// getters and setters
 	virtual T& operator[](size_t) = 0;
-	virtual const T& operator[](size_t) const = 0;
+	virtual T const & operator[](size_t) const = 0;
 	virtual size_t len() const { return _LENGTH; }
 
 protected:
