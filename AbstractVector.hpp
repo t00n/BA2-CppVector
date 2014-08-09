@@ -15,6 +15,10 @@ public:
 	virtual T const & operator[](size_t) const = 0;
 	virtual size_t len() const { return _LENGTH; }
 
+	// I/O
+	virtual void print(std::ostream& os, size_t index) const = 0;
+	virtual void scan(std::istream& is, size_t index) = 0;
+
 protected:
 	size_t _LENGTH;
 };
@@ -29,7 +33,7 @@ std::ostream& operator<<(std::ostream& os, const AbstractVector<T>& vec)
 		{
 			os << ", ";
 		}
-		os << vec[i];
+		vec.print(os, i);
 	}
     os << "]" << std::endl;
     return os;
@@ -40,7 +44,7 @@ std::istream& operator>>(std::istream& is, AbstractVector<T>& vec)
 {
 	for (size_t i = 0; i < vec.len(); ++i)
 	{
-		is >> vec[i];
+		vec.scan(is, i);
 	}
 	return is;
 }

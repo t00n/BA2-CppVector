@@ -14,6 +14,7 @@ public:
 	Vector(size_t len) : AbstractVector<T>(len), _data(new T[len])
 	{}
 
+	// Constructor from Vector<T, ...> where T is any equivalent/convertible type
 	template <typename U>
 	Vector(const AbstractVector<U>& other) : AbstractVector<T>(other.len()), _data(new T[other.len()])
 	{
@@ -23,6 +24,7 @@ public:
 		}
 	}
 
+	// Constructor from Vector<T*, ...> where T is any equivalent/convertible type
 	template <typename U>
 	Vector(const AbstractVector<U*>& other) : AbstractVector<T>(other.len()), _data(new T[other.len()])
 	{
@@ -37,6 +39,7 @@ public:
 		delete[] _data;
 	}
 
+	// operator= from Vector<T, ...> where 'other' might be a conversion from an equivalent type
 	Vector& operator=(const AbstractVector<T>& other)
 	{
 		if (&other != this and other.len() == this->len())
@@ -59,6 +62,16 @@ public:
 		return this->_data[index];
 	}
 
+	virtual void print(std::ostream& os, size_t index) const
+	{
+		os << this->_data[index];
+	}
+
+	virtual void scan(std::istream& is, size_t index)
+	{
+		is >> this->_data[index];
+	}
+
 protected:
 	T* _data;
 
@@ -76,6 +89,7 @@ public:
 		}
 	}
 
+	// Constructor from Vector<T, ...>
 	template <typename U>
 	Vector(const AbstractVector<U>& other) : AbstractVector<T>(other.len()), _data(new T*[other.len()])
 	{
@@ -85,6 +99,7 @@ public:
 		}
 	}
 
+	// Constructor from Vector<T*, ...>
 	template <typename U>
 	Vector(const AbstractVector<U*>& other) : AbstractVector<T>(other.len()), _data(new T*[other.len()])
 	{
@@ -100,7 +115,7 @@ public:
 		{
 			for (size_t i = 0; i < this->len(); ++i)
 			{
-				this->_data[i] = new T(other[i]);
+				*(this->_data[i]) = other[i];
 			}
 		}
 		return *this;
@@ -125,6 +140,16 @@ public:
 		return *(this->_data[index]);
 	}
 
+	virtual void print(std::ostream& os, size_t index) const
+	{
+		os << *(this->_data[index]);
+	}
+
+	virtual void scan(std::istream& is, size_t index)
+	{
+		is >> *(this->_data[index]);
+	}
+
 protected:
 	T** _data;
 };
@@ -141,7 +166,9 @@ public:
 		}
 	}
 
-	Vector(const AbstractVector<T>& other) : AbstractVector<T*>(other.len()), _data(new T*[other.len()])
+	// Constructor from Vector<T, ...>
+	template <typename U>
+	Vector(const AbstractVector<U>& other) : AbstractVector<T*>(other.len()), _data(new T*[other.len()])
 	{
 		for (size_t i = 0; i < this->len(); ++i)
 		{
@@ -149,13 +176,23 @@ public:
 		}
 	}
 
-	Vector& operator=(const AbstractVector<T>& other)
+	// Constructor from Vector<T*, ...>
+	template <typename U>
+	Vector(const AbstractVector<U*>& other) : AbstractVector<T*>(other.len()), _data(new T*[other.len()])
+	{
+		for (size_t i = 0; i < this->len(); ++i)
+		{
+			this->_data[i] = new T(*(other[i]));
+		}
+	}
+
+	Vector& operator=(const AbstractVector<T*>& other)
 	{
 		if (&other != this and other.len() == this->len())
 		{
 			for (size_t i = 0; i < this->len(); ++i)
 			{
-				this->_data[i] = new T(other[i]);
+				*(this->_data[i]) = *(other[i]);
 			}
 		}
 		return *this;
@@ -179,6 +216,17 @@ public:
 	{
 		return this->_data[index];
 	}
+
+	virtual void print(std::ostream& os, size_t index) const
+	{
+		os << *(this->_data[index]);
+	}
+
+	virtual void scan(std::istream& is, size_t index)
+	{
+		is >> *(this->_data[index]);
+	}
+
 protected:
 	T** _data;
 };
