@@ -39,6 +39,7 @@ public:
 		delete[] _data;
 	}
 
+	// WRONG operator =
 	// operator= from Vector<T, ...> where 'other' might be a conversion from an equivalent type
 	Vector& operator=(const AbstractVector<T>& other)
 	{
@@ -89,6 +90,14 @@ public:
 		}
 	}
 
+	Vector(const Vector<T, true>& other) : AbstractVector<T>(other.len()), _data(new T*[other.len()])
+	{
+		for (size_t i = 0; i < this->len(); ++i)
+		{
+			this->_data[i] = new T(other[i]);
+		}
+	}
+
 	// Constructor from Vector<T, ...>
 	template <typename U>
 	Vector(const AbstractVector<U>& other) : AbstractVector<T>(other.len()), _data(new T*[other.len()])
@@ -109,6 +118,7 @@ public:
 		}
 	}
 
+	// WRONG operator =	
 	Vector& operator=(const AbstractVector<T>& other)
 	{
 		if (&other != this and other.len() == this->len())
@@ -166,6 +176,14 @@ public:
 		}
 	}
 
+	Vector(const Vector<T*, false>& other) : AbstractVector<T*>(other.len()), _data(new T*[other.len()])
+	{
+		for (size_t i = 0; i < this->len(); ++i)
+		{
+			this->_data[i] = new T(*(other[i]));
+		}
+	}
+
 	// Constructor from Vector<T, ...>
 	template <typename U>
 	Vector(const AbstractVector<U>& other) : AbstractVector<T*>(other.len()), _data(new T*[other.len()])
@@ -186,6 +204,7 @@ public:
 		}
 	}
 
+	// WRONG operator = 
 	Vector& operator=(const AbstractVector<T*>& other)
 	{
 		if (&other != this and other.len() == this->len())
