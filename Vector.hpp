@@ -2,6 +2,7 @@
 #define __VECTOR_HPP
 
 #include "AbstractVector.hpp"
+#include "VectorImpl.hpp"
 
 template <typename T, bool pointer>
 class Vector
@@ -35,7 +36,14 @@ public:
 	{
 		for (size_t i = 0; i < this->len(); ++i)
 		{
-			this->_data[i] = *(other[i]);
+			if (other[i] == nullptr)
+			{
+				this->_data[i] = T();
+			}
+			else
+			{
+				this->_data[i] = *(other[i]);
+			}
 		}
 	}
 
@@ -91,7 +99,7 @@ public:
 	{
 		for (size_t i = 0; i < len; ++i)
 		{
-			this->_data[i] = new T();;
+			this->_data[i] = new T();
 		}
 	}
 
@@ -119,7 +127,14 @@ public:
 	{
 		for (size_t i = 0; i < this->len(); ++i)
 		{
-			this->_data[i] = new T(*(other[i]));
+			if (other[i] == nullptr)
+			{
+				this->_data[i] = new T();
+			}
+			else
+			{
+				this->_data[i] = new T(*(other[i]));
+			}
 		}
 	}
 
@@ -177,7 +192,7 @@ public:
 	{
 		for (size_t i = 0; i < len; ++i)
 		{
-			this->_data[i] = new T();;
+			this->_data[i] = nullptr;
 		}
 	}
 
@@ -185,7 +200,14 @@ public:
 	{
 		for (size_t i = 0; i < this->len(); ++i)
 		{
-			this->_data[i] = new T(*(other[i]));
+			if (other[i] == nullptr)
+			{
+				this->_data[i] = nullptr;
+			}
+			else
+			{
+				this->_data[i] = new T(*(other[i]));
+			}
 		}
 	}
 
@@ -205,7 +227,14 @@ public:
 	{
 		for (size_t i = 0; i < this->len(); ++i)
 		{
-			this->_data[i] = new T(*(other[i]));
+			if (other[i] == nullptr)
+			{
+				this->_data[i] = nullptr;
+			}
+			else
+			{
+				this->_data[i] = new T(*(other[i]));
+			}
 		}
 	}
 
@@ -226,7 +255,10 @@ public:
 	{
 		for (size_t i = 0; i < this->len(); ++i)
 		{
-			delete this->_data[i];
+			if (this->_data[i] != nullptr)
+			{
+				delete this->_data[i];				
+			}
 		}
 		delete[] _data;
 	}

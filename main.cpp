@@ -2,66 +2,67 @@
 #include <cstdlib>
 #include <cassert>
 #include "Vector.hpp"
+#include <vector>
 using namespace std;
 
 void constructors()
 {
 	// int, false
-	Vector<int, false> vectorInt1(10);
-	vectorInt1[0] = 1;
-	vectorInt1[5] = 6;
-	assert(vectorInt1.len() == 10);
-	assert(vectorInt1[0] == 1);
-	assert(vectorInt1[5] == 6);
+	Vector<int, false> intFalse1(10);
+	intFalse1[0] = 1;
+	intFalse1[5] = 6;
+	assert(intFalse1.len() == 10);
+	assert(intFalse1[0] == 1);
+	assert(intFalse1[5] == 6);
 	// int, false -> int, true
-	Vector<int, true> vectorInt2(vectorInt1);
-	assert(vectorInt2.len() == 10);
-	assert(vectorInt2[0] == 1);
-	assert(vectorInt2[5] == 6);
-	vectorInt2[0] = 5;
+	Vector<int, true> intTrue1(intFalse1);
+	assert(intTrue1.len() == 10);
+	assert(intTrue1[0] == 1);
+	assert(intTrue1[5] == 6);
+	intTrue1[0] = 5;
 	// int, true -> int, false
-	Vector<int, false> vectorInt3(vectorInt2);
-	assert(vectorInt3.len() == 10);
-	assert(vectorInt3[0] == 5);
-	assert(vectorInt3[5] == 6);
+	Vector<int, false> intFalse2(intTrue1);
+	assert(intFalse2.len() == 10);
+	assert(intFalse2[0] == 5);
+	assert(intFalse2[5] == 6);
 	// int*, false
-	Vector<int*, false> vectorInt5(10);
-	*(vectorInt5[0]) = 1;
-	*(vectorInt5[1]) = 2;
-	assert(*(vectorInt5[0]) == 1);
-	assert(*(vectorInt5[1]) == 2);
+	Vector<int*, false> intStar1(10);
+	intStar1[0] = new int(1);
+	intStar1[1] = new int(2);
+	assert(*(intStar1[0]) == 1);
+	assert(*(intStar1[1]) == 2);
 	// int, true -> int*, false
-	Vector<int*, false> vectorInt6(vectorInt3);
-	assert(*(vectorInt6[0]) == 5);
-	assert(*(vectorInt6[5]) == 6);
-	assert(vectorInt6[0] != &(vectorInt3[0]));
-	assert(vectorInt6[5] != &(vectorInt3[5]));
+	Vector<int*, false> intStar2(intTrue1);
+	assert(*(intStar2[0]) == 5);
+	assert(*(intStar2[5]) == 6);
+	assert(intStar2[0] != &(intFalse2[0]));
+	assert(intStar2[5] != &(intFalse2[5]));
 	// int*, false -> int, false
-	Vector<int, false> vectorInt7(vectorInt6);
-	assert(vectorInt7[0] == 5);
-	assert(vectorInt7[5] == 6);
+	Vector<int, false> intFalse3(intStar2);
+	assert(intFalse3[0] == 5);
+	assert(intFalse3[5] == 6);
 	// int, false -> int*, false
-	Vector<int*, false> vectorInt8(vectorInt7);
-	assert(*(vectorInt8[0]) == 5);
-	assert(*(vectorInt8[5]) == 6);
+	Vector<int*, false> intStar3(intFalse3);
+	assert(*(intStar3[0]) == 5);
+	assert(*(intStar3[5]) == 6);
 	// int*, false -> int, true
-	Vector<int, true> vectorInt9(vectorInt8);
-	assert(vectorInt9[0] == 5);
-	assert(vectorInt9[5] == 6);
-	assert(&(vectorInt9[0]) != vectorInt8[0]);
-	assert(&(vectorInt9[5]) != vectorInt8[5]);
+	Vector<int, true> intTrue2(intStar3);
+	assert(intTrue2[0] == 5);
+	assert(intTrue2[5] == 6);
+	assert(&(intTrue2[0]) != intStar3[0]);
+	assert(&(intTrue2[5]) != intStar3[5]);
 	// int*, false -> int*, false
-	Vector<int*, false> vectorInt10(vectorInt8);
-	assert(*(vectorInt10[0]) == 5);
-	assert(*(vectorInt10[5]) == 6);
-	assert(vectorInt10[0] != vectorInt8[0]);
-	assert(vectorInt10[5] != vectorInt8[5]);
+	Vector<int*, false> intStar4(intStar3);
+	assert(*(intStar4[0]) == 5);
+	assert(*(intStar4[5]) == 6);
+	assert(intStar4[0] != intStar3[0]);
+	assert(intStar4[5] != intStar3[5]);
 	// int, true -> int, true
-	Vector<int, true> vectorInt11(vectorInt9);
-	assert(vectorInt11[0] == 5);
-	assert(vectorInt11[5] == 6);
-	assert(&(vectorInt11[0]) != &(vectorInt9[0]));
-	assert(&(vectorInt11[5]) != &(vectorInt9[5]));
+	Vector<int, true> intTrue3(intTrue2);
+	assert(intTrue3[0] == 5);
+	assert(intTrue3[5] == 6);
+	assert(&(intTrue3[0]) != &(intTrue2[0]));
+	assert(&(intTrue3[5]) != &(intTrue2[5]));
 }
 
 void operators()
@@ -86,8 +87,8 @@ void conversions()
 	assert(*(vectorCharStar[5]) == 'A');
 
 	Vector<char*, false> vectorIntStar(10);
-	*(vectorIntStar[0]) = 90;
-	*(vectorIntStar[5]) = 65;
+	vectorIntStar[0] = new char('Z');
+	vectorIntStar[5] = new char('A');
 	Vector<int*, false> vectorCharStar2(vectorIntStar);
 	assert(*(vectorCharStar2[0]) == 'Z');
 	assert(*(vectorCharStar2[5]) == 'A');
@@ -118,7 +119,10 @@ void vStatic()
 	vector[0] = 5;
 	vector[5] = 6;
 	VectorStatic<int, false, 10> vectorStatic1(vector);
-	cout << vectorStatic1 << endl;
+	vectorStatic1[1] = 11;
+	assert(vectorStatic1[0] == 5);
+	assert(vectorStatic1[5] == 6);
+	assert(vectorStatic1[1] == 11);
 }
 
 int main()
@@ -126,6 +130,6 @@ int main()
 	constructors(); // Ok
 	operators();
 	conversions(); // Ok
-	vStatic();
+	vStatic(); // Ok
 	return EXIT_SUCCESS;
 }
