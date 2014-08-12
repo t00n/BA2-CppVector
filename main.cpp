@@ -2,7 +2,6 @@
 #include <cstdlib>
 #include <cassert>
 #include "Vector.hpp"
-#include <vector>
 using namespace std;
 
 void constructors()
@@ -29,6 +28,7 @@ void constructors()
 	Vector<int*, false> intStar1(10);
 	intStar1[0] = new int(1);
 	intStar1[1] = new int(2);
+	assert(intStar1[5] == nullptr);
 	assert(*(intStar1[0]) == 1);
 	assert(*(intStar1[1]) == 2);
 	// int, true -> int*, false
@@ -63,11 +63,98 @@ void constructors()
 	assert(intTrue3[5] == 6);
 	assert(&(intTrue3[0]) != &(intTrue2[0]));
 	assert(&(intTrue3[5]) != &(intTrue2[5]));
+	// int*, false -> int*, true
+	Vector<int*, true> intStar5(intStar4);
+	assert(*(intStar5[0]) == 5);
+	assert(*(intStar5[5]) == 6);
+	assert(intStar5[0] != intStar4[0]);
+	assert(intStar5[5] != intStar4[5]);
 }
 
 void operators()
 {
-
+	// int, false -> int, true
+	Vector<int, false> intFalse1(10);
+	intFalse1[0] = 5;
+	intFalse1[5] = 6;
+	Vector<int, true> intTrue1(10);
+	intTrue1 = intFalse1;
+	assert(intTrue1[0] == 5);
+	assert(intTrue1[5] == 6);
+	assert(&(intTrue1[1]) != nullptr);
+	// int, true -> int, false
+	intTrue1[1] = 1;
+	intTrue1[2] = 2;
+	intFalse1 = intTrue1;
+	assert(intFalse1[1] == 1);
+	assert(intFalse1[2] == 2);
+	// int, false -> int*, false
+	Vector<int*, false> intStar1(10);
+	intStar1 = intFalse1;
+	assert(*(intStar1[0]) == 5);
+	assert(*(intStar1[1]) == 1);
+	assert(*(intStar1[2]) == 2);
+	assert(*(intStar1[5]) == 6);
+	// int*, false -> int, false
+	*(intStar1[1]) = 10;
+	intFalse1 = intStar1;
+	assert(intFalse1[1] == 10);
+	// int, true -> int*,false
+	Vector<int*, false> intStar2(10);
+	intStar2 = intTrue1;
+	assert(*(intStar2[0]) == 5);
+	assert(*(intStar2[1]) == 1);
+	assert(*(intStar2[2]) == 2);
+	assert(*(intStar2[5]) == 6);
+	assert(intStar2[0] != &(intTrue1[0]));
+	assert(intStar2[1] != &(intTrue1[1]));
+	assert(intStar2[2] != &(intTrue1[2]));
+	assert(intStar2[5] != &(intTrue1[5]));
+	// int*, false -> int, true
+	Vector<int, true> intTrue2(10);
+	intTrue2 = intStar2;
+	assert(intTrue2[0] == 5);
+	assert(intTrue2[1] == 1);
+	assert(intTrue2[2] == 2);
+	assert(intTrue2[5] == 6);
+	assert(intStar2[0] != &(intTrue2[0]));
+	assert(intStar2[1] != &(intTrue2[1]));
+	assert(intStar2[2] != &(intTrue2[2]));
+	assert(intStar2[5] != &(intTrue2[5]));
+	// int, true -> int, true
+	Vector<int, true> intTrue3(10);
+	intTrue3 = intTrue2;
+	assert(intTrue3[0] == 5);
+	assert(intTrue3[1] == 1);
+	assert(intTrue3[2] == 2);
+	assert(intTrue3[5] == 6);
+	assert(&(intTrue3[0]) != &(intTrue2[0]));
+	assert(&(intTrue3[1]) != &(intTrue2[1]));
+	assert(&(intTrue3[2]) != &(intTrue2[2]));
+	assert(&(intTrue3[5]) != &(intTrue2[5]));
+	// int*, false -> int*, false
+	Vector<int*, false> intStar3(10);
+	delete intStar2[3];
+	intStar2[3] = nullptr;
+	intStar3 = intStar2;
+	assert(*(intStar3[0]) == 5);
+	assert(*(intStar3[1]) == 1);
+	assert(*(intStar3[2]) == 2);
+	assert(*(intStar3[5]) == 6);
+	assert(intStar2[0] != intStar3[0]);
+	assert(intStar2[1] != intStar3[1]);
+	assert(intStar2[2] != intStar3[2]);
+	assert(intStar2[5] != intStar3[5]);
+	assert(intStar3[3] == nullptr);
+	// char, true -> int, true
+	Vector<char, true> charTrue1(10);
+	charTrue1[3] = 65;
+	charTrue1[4] = 90;
+	intTrue2 = charTrue1;
+	assert(intTrue2[3] == 65);
+	assert(intTrue2[4] == 90);
+	assert(&(intTrue2[3]) != (int*)&(charTrue1[3]));
+	assert(&(intTrue2[4]) != (int*)&(charTrue1[4]));
 }
 
 void conversions()
@@ -125,11 +212,28 @@ void vStatic()
 	assert(vectorStatic1[1] == 11);
 }
 
+void sizeDifference()
+{
+	Vector<int, false> vector1(10);
+	vector1[0] = 5;
+	Vector<int, true> vector2(9);
+	vector2 = vector1;
+	assert(vector2[0] != 5);
+	Vector<int*, true> vector3(9);
+	vector2[1] = 6;
+	vector3 = vector2 = vector1;
+	assert(vector2[0] != 5);
+	assert(*(vector3[0]) != 5);
+	assert(vector2[1] == 6);
+	assert(*(vector3[1]) == 6);
+}
+
 int main()
 {
 	constructors(); // Ok
-	operators();
+	operators(); // Ok
 	conversions(); // Ok
 	vStatic(); // Ok
+	sizeDifference(); // Ok
 	return EXIT_SUCCESS;
 }

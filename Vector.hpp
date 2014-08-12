@@ -2,7 +2,6 @@
 #define __VECTOR_HPP
 
 #include "AbstractVector.hpp"
-#include "VectorImpl.hpp"
 
 template <typename T, bool pointer>
 class Vector
@@ -17,6 +16,14 @@ public:
 		for (size_t i = 0; i < this->len(); ++i)
 		{
 			this->_data[i] = T();
+		}
+	}
+
+	Vector(const Vector<T, false>& other) : AbstractVector<T>(other.len()), _data(new T[other.len()])
+	{
+		for (size_t i = 0; i < this->len(); ++i)
+		{
+			this->_data[i] = other[i];
 		}
 	}
 
@@ -52,9 +59,7 @@ public:
 		delete[] _data;
 	}
 
-	// WRONG operator =
-	// operator= from Vector<T, ...> where 'other' might be a conversion from an equivalent type
-	Vector& operator=(const AbstractVector<T>& other)
+	Vector& operator=(const Vector<T, false>& other)
 	{
 		if (&other != this and other.len() == this->len())
 		{
@@ -138,8 +143,7 @@ public:
 		}
 	}
 
-	// WRONG operator =	
-	Vector& operator=(const AbstractVector<T>& other)
+	Vector& operator=(const Vector<T, true>& other)
 	{
 		if (&other != this and other.len() == this->len())
 		{
@@ -238,14 +242,31 @@ public:
 		}
 	}
 
-	// WRONG operator = 
-	Vector& operator=(const AbstractVector<T*>& other)
+	Vector& operator=(const Vector<T*, false>& other)
 	{
 		if (&other != this and other.len() == this->len())
 		{
 			for (size_t i = 0; i < this->len(); ++i)
 			{
-				*(this->_data[i]) = *(other[i]);
+				if (other[i] == nullptr)
+				{
+					if (this->_data[i] != nullptr)
+					{
+						delete this->_data[i];
+						this->_data[i] = nullptr;
+					}
+				}
+				else
+				{
+					if (this->_data[i] != nullptr)
+					{
+						*(this->_data[i]) = *(other[i]);
+					}
+					else
+					{
+						this->_data[i] = new T(*(other[i]));
+					}
+				}
 			}
 		}
 		return *this;
@@ -301,7 +322,6 @@ public:
 	using Vector<T, POINTER>::Vector;
 	VectorStatic() : Vector<T, POINTER>(N)
 	{}
-
 };
 
 #endif // __VECTOR_HPP

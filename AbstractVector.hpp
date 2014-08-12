@@ -2,6 +2,7 @@
 #define __ABSTRACT_VECTOR_HPP
 
 #include <cstddef>
+#include <type_traits>
 
 template <typename T>
 class AbstractVector

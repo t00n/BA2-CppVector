@@ -4,10 +4,9 @@ OBJ=$(SRC:.cpp=.o)
 EXEC=vector.app
 CPPFLAGS=-c -g -std=c++11 -Wpedantic -Wall -Wextra -Winit-self -Winline -Wconversion -Weffc++ \
 -Wsign-promo -Wctor-dtor-privacy -Woverloaded-virtual -Wconversion \
--Wint-to-void-pointer-cast -Wcomment
-#-Wstrict-null-sentinel -Wnoexcept -Wzero-as-null-pointer-constant \
+-Wstrict-null-sentinel -Wnoexcept -Wzero-as-null-pointer-constant
 LDFLAGS=
-CC=clang++
+CC=g++
 
 all: $(SRC) $(EXEC)
 	./$(EXEC)
