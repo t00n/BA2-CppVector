@@ -1,7 +1,9 @@
 #include <iostream>
 #include <cstdlib>
 #include <cassert>
+#include <string>
 #include "Vector.hpp"
+#include "VectorString.hpp"
 using namespace std;
 
 void constructors()
@@ -228,6 +230,38 @@ void sizeDifference()
 	assert(*(vector3[1]) == 6);
 }
 
+void strings()
+{
+	Vector<char, false> charFalse(7);
+	charFalse[0] = 'W';
+	charFalse[1] = 'o';
+	charFalse[2] = 'r';
+	charFalse[3] = 'k';
+	charFalse[4] = 'i';
+	charFalse[5] = 'n';
+	charFalse[6] = 'g';
+	cout << charFalse << endl;
+	Vector<char*, false> charStar(10);
+	charStar[0] = new char[5];
+	charStar[0][0] = 'W';
+	charStar[0][1] = 'o';
+	charStar[0][2] = 'r';
+	charStar[0][3] = 'k';
+	charStar[0][4] = '\0';
+	charStar[1] = new char[5];
+	charStar[1][0] = 'i';
+	charStar[1][1] = 'n';
+	charStar[1][2] = 'g';
+	charStar[1][3] = '!';
+	charStar[1][4] = '\0';
+	cout << charStar << endl;
+	Vector<string, false> stringFalse(10);
+	stringFalse[0] = "Wor";
+	stringFalse[1] = "ki";
+	stringFalse[2] = "ng!";
+	cout << stringFalse << endl;
+}
+
 int main()
 {
 	constructors(); // Ok
@@ -235,5 +269,6 @@ int main()
 	conversions(); // Ok
 	vStatic(); // Ok
 	sizeDifference(); // Ok
+	strings(); // Ok
 	return EXIT_SUCCESS;
 }

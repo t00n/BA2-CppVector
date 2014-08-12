@@ -4,14 +4,14 @@
 #include "AbstractVector.hpp"
 
 template <typename T, bool pointer>
-class Vector
+class VectorImpl
 {};
 
 template <typename T>
-class Vector<T, false> : public AbstractVector<T>
+class VectorImpl<T, false> : public AbstractVector<T>
 {
 public:
-	Vector(size_t len) : AbstractVector<T>(len), _data(new T[len])
+	VectorImpl(size_t len) : AbstractVector<T>(len), _data(new T[len])
 	{
 		for (size_t i = 0; i < this->len(); ++i)
 		{
@@ -19,7 +19,7 @@ public:
 		}
 	}
 
-	Vector(const Vector<T, false>& other) : AbstractVector<T>(other.len()), _data(new T[other.len()])
+	VectorImpl(const VectorImpl<T, false>& other) : AbstractVector<T>(other.len()), _data(new T[other.len()])
 	{
 		for (size_t i = 0; i < this->len(); ++i)
 		{
@@ -27,9 +27,9 @@ public:
 		}
 	}
 
-	// Constructor from Vector<T, ...> where T is any equivalent/convertible type
+	// Constructor from VectorImpl<T, ...> where T is any equivalent/convertible type
 	template <typename U>
-	Vector(const AbstractVector<U>& other) : AbstractVector<T>(other.len()), _data(new T[other.len()])
+	VectorImpl(const AbstractVector<U>& other) : AbstractVector<T>(other.len()), _data(new T[other.len()])
 	{
 		for (size_t i = 0; i < this->len(); ++i)
 		{
@@ -37,9 +37,9 @@ public:
 		}
 	}
 
-	// Constructor from Vector<T*, ...> where T is any equivalent/convertible type
+	// Constructor from VectorImpl<T*, ...> where T is any equivalent/convertible type
 	template <typename U>
-	Vector(const AbstractVector<U*>& other) : AbstractVector<T>(other.len()), _data(new T[other.len()])
+	VectorImpl(const AbstractVector<U*>& other) : AbstractVector<T>(other.len()), _data(new T[other.len()])
 	{
 		for (size_t i = 0; i < this->len(); ++i)
 		{
@@ -54,12 +54,12 @@ public:
 		}
 	}
 
-	~Vector()
+	~VectorImpl()
 	{
 		delete[] _data;
 	}
 
-	Vector& operator=(const Vector<T, false>& other)
+	VectorImpl& operator=(const VectorImpl<T, false>& other)
 	{
 		if (&other != this and other.len() == this->len())
 		{
@@ -97,10 +97,10 @@ protected:
 };
 
 template <typename T>
-class Vector<T, true> : public AbstractVector<T>
+class VectorImpl<T, true> : public AbstractVector<T>
 {
 public:
-	Vector(size_t len) : AbstractVector<T>(len), _data(new T*[len])
+	VectorImpl(size_t len) : AbstractVector<T>(len), _data(new T*[len])
 	{
 		for (size_t i = 0; i < len; ++i)
 		{
@@ -108,7 +108,7 @@ public:
 		}
 	}
 
-	Vector(const Vector<T, true>& other) : AbstractVector<T>(other.len()), _data(new T*[other.len()])
+	VectorImpl(const VectorImpl<T, true>& other) : AbstractVector<T>(other.len()), _data(new T*[other.len()])
 	{
 		for (size_t i = 0; i < this->len(); ++i)
 		{
@@ -116,9 +116,9 @@ public:
 		}
 	}
 
-	// Constructor from Vector<T, ...>
+	// Constructor from VectorImpl<T, ...>
 	template <typename U>
-	Vector(const AbstractVector<U>& other) : AbstractVector<T>(other.len()), _data(new T*[other.len()])
+	VectorImpl(const AbstractVector<U>& other) : AbstractVector<T>(other.len()), _data(new T*[other.len()])
 	{
 		for (size_t i = 0; i < this->len(); ++i)
 		{
@@ -126,9 +126,9 @@ public:
 		}
 	}
 
-	// Constructor from Vector<T*, ...>
+	// Constructor from VectorImpl<T*, ...>
 	template <typename U>
-	Vector(const AbstractVector<U*>& other) : AbstractVector<T>(other.len()), _data(new T*[other.len()])
+	VectorImpl(const AbstractVector<U*>& other) : AbstractVector<T>(other.len()), _data(new T*[other.len()])
 	{
 		for (size_t i = 0; i < this->len(); ++i)
 		{
@@ -143,7 +143,7 @@ public:
 		}
 	}
 
-	Vector& operator=(const Vector<T, true>& other)
+	VectorImpl& operator=(const VectorImpl<T, true>& other)
 	{
 		if (&other != this and other.len() == this->len())
 		{
@@ -155,7 +155,7 @@ public:
 		return *this;
 	}
 
-	~Vector()
+	~VectorImpl()
 	{
 		for (size_t i = 0; i < this->len(); ++i)
 		{
@@ -189,18 +189,18 @@ protected:
 };
 
 template <typename T>
-class Vector<T*, false> : public AbstractVector<T*>
+class VectorImpl<T*, false> : public AbstractVector<T*>
 {
 public:
-	Vector(size_t len) : AbstractVector<T*>(len), _data(new T*[len])
+	VectorImpl(size_t len) : AbstractVector<T*>(len), _data(new T*[len])
 	{
-		for (size_t i = 0; i < len; ++i)
+		for (size_t i = 0; i < this->len(); ++i)
 		{
 			this->_data[i] = nullptr;
 		}
 	}
 
-	Vector(const Vector<T*, false>& other) : AbstractVector<T*>(other.len()), _data(new T*[other.len()])
+	VectorImpl(const VectorImpl<T*, false>& other) : AbstractVector<T*>(other.len()), _data(new T*[other.len()])
 	{
 		for (size_t i = 0; i < this->len(); ++i)
 		{
@@ -215,9 +215,9 @@ public:
 		}
 	}
 
-	// Constructor from Vector<T, ...>
+	// Constructor from VectorImpl<T, ...>
 	template <typename U>
-	Vector(const AbstractVector<U>& other) : AbstractVector<T*>(other.len()), _data(new T*[other.len()])
+	VectorImpl(const AbstractVector<U>& other) : AbstractVector<T*>(other.len()), _data(new T*[other.len()])
 	{
 		for (size_t i = 0; i < this->len(); ++i)
 		{
@@ -225,9 +225,9 @@ public:
 		}
 	}
 
-	// Constructor from Vector<T*, ...>
+	// Constructor from VectorImpl<T*, ...>
 	template <typename U>
-	Vector(const AbstractVector<U*>& other) : AbstractVector<T*>(other.len()), _data(new T*[other.len()])
+	VectorImpl(const AbstractVector<U*>& other) : AbstractVector<T*>(other.len()), _data(new T*[other.len()])
 	{
 		for (size_t i = 0; i < this->len(); ++i)
 		{
@@ -242,7 +242,7 @@ public:
 		}
 	}
 
-	Vector& operator=(const Vector<T*, false>& other)
+	VectorImpl& operator=(const VectorImpl<T*, false>& other)
 	{
 		if (&other != this and other.len() == this->len())
 		{
@@ -272,7 +272,7 @@ public:
 		return *this;
 	}
 
-	~Vector()
+	~VectorImpl()
 	{
 		for (size_t i = 0; i < this->len(); ++i)
 		{
@@ -296,11 +296,18 @@ public:
 
 	virtual void print(std::ostream& os, size_t index) const
 	{
-		os << *(this->_data[index]);
+		if (this->_data[index] != nullptr)
+		{
+			os << this->_data[index];
+		}
 	}
 
 	virtual void scan(std::istream& is, size_t index)
 	{
+		if (this->_data[index] == nullptr)
+		{
+			this->_data[index] = new T();
+		}
 		is >> *(this->_data[index]);
 	}
 
@@ -309,18 +316,25 @@ protected:
 };
 
 template <typename T>
-class Vector<T*, true> : public Vector<T*, false>
+class VectorImpl<T*, true> : public VectorImpl<T*, false>
 {
 public:
-	using Vector<T*, false>::Vector;
+	using VectorImpl<T*, false>::VectorImpl;
+};
+
+template <typename T, bool POINTER>
+class Vector : public VectorImpl<T, POINTER>
+{
+public:
+	using VectorImpl<T, POINTER>::VectorImpl;
 };
 
 template <typename T, bool POINTER, size_t N>
-class VectorStatic : public Vector<T, POINTER>
+class VectorStatic : public VectorImpl<T, POINTER>
 {
 public:
-	using Vector<T, POINTER>::Vector;
-	VectorStatic() : Vector<T, POINTER>(N)
+	using VectorImpl<T, POINTER>::VectorImpl;
+	VectorStatic() : VectorImpl<T, POINTER>(N)
 	{}
 };
 
