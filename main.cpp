@@ -4,6 +4,7 @@
 #include <string>
 #include "Vector.hpp"
 #include "VectorString.hpp"
+#include "VectorNum.hpp"
 using namespace std;
 
 void constructors()
@@ -71,6 +72,7 @@ void constructors()
 	assert(*(intStar5[5]) == 6);
 	assert(intStar5[0] != intStar4[0]);
 	assert(intStar5[5] != intStar4[5]);
+	// intFalse1.caca();
 }
 
 void operators()

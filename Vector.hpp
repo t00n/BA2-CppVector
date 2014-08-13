@@ -81,6 +81,7 @@ public:
 		return this->_data[index];
 	}
 
+protected:
 	virtual void print(std::ostream& os, size_t index) const
 	{
 		os << this->_data[index];
@@ -91,7 +92,6 @@ public:
 		is >> this->_data[index];
 	}
 
-protected:
 	T* _data;
 
 };
@@ -174,6 +174,7 @@ public:
 		return *(this->_data[index]);
 	}
 
+protected:
 	virtual void print(std::ostream& os, size_t index) const
 	{
 		os << *(this->_data[index]);
@@ -184,7 +185,6 @@ public:
 		is >> *(this->_data[index]);
 	}
 
-protected:
 	T** _data;
 };
 
@@ -294,24 +294,23 @@ public:
 		return this->_data[index];
 	}
 
+protected:
 	virtual void print(std::ostream& os, size_t index) const
 	{
 		if (this->_data[index] != nullptr)
 		{
-			os << this->_data[index];
+			os << *(this->_data[index]);
 		}
 	}
 
 	virtual void scan(std::istream& is, size_t index)
 	{
-		if (this->_data[index] == nullptr)
+		if (this->_data[index] != nullptr)
 		{
-			this->_data[index] = new T();
+			is >> *(this->_data[index]);
 		}
-		is >> *(this->_data[index]);
 	}
 
-protected:
 	T** _data;
 };
 
@@ -322,7 +321,7 @@ public:
 	using VectorImpl<T*, false>::VectorImpl;
 };
 
-template <typename T, bool POINTER>
+template <typename T, bool POINTER, typename Enable = void>
 class Vector : public VectorImpl<T, POINTER>
 {
 public:
@@ -330,11 +329,11 @@ public:
 };
 
 template <typename T, bool POINTER, size_t N>
-class VectorStatic : public VectorImpl<T, POINTER>
+class VectorStatic : public Vector<T, POINTER>
 {
 public:
-	using VectorImpl<T, POINTER>::VectorImpl;
-	VectorStatic() : VectorImpl<T, POINTER>(N)
+	using Vector<T, POINTER>::Vector;
+	VectorStatic() : Vector<T, POINTER>(N)
 	{}
 };
 

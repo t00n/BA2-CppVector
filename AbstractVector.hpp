@@ -16,11 +16,10 @@ public:
 	virtual T const & operator[](size_t) const = 0;
 	virtual size_t len() const { return _LENGTH; }
 
+protected:
 	// I/O
 	virtual void print(std::ostream& os, size_t index) const = 0;
 	virtual void scan(std::istream& is, size_t index) = 0;
-
-protected:
 	size_t _LENGTH;
 };
 

@@ -6,7 +6,7 @@ CPPFLAGS=-c -g -std=c++11 -Wpedantic -Wall -Wextra -Winit-self -Winline -Wconver
 -Wsign-promo -Wctor-dtor-privacy -Woverloaded-virtual -Wconversion \
 -Wstrict-null-sentinel -Wnoexcept -Wzero-as-null-pointer-constant
 LDFLAGS=
-CC=g++
+CC=clang++
 
 all: $(SRC) $(EXEC)
 	./$(EXEC)
