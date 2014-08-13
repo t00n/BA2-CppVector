@@ -304,6 +304,20 @@ void iterators()
 	}
 }
 
+void integers()
+{
+	Vector<int, false> intFalse1(10);
+	intFalse1[0] = 1;
+	intFalse1[1] = 2;
+	Vector<int*, false> intStar1(10);
+	intStar1[0] = new int(1);
+	intStar1[1] = new int(2);
+	Vector<int, true> intTrue1(10);
+	intTrue1 = intFalse1 + intStar1;
+	assert(intTrue1[0] == 2);
+	assert(intTrue1[1] == 4);
+}
+
 int main()
 {
 	constructors(); // Ok
@@ -313,5 +327,6 @@ int main()
 	sizeDifference(); // Ok
 	strings(); // Ok
 	iterators();
+	integers();
 	return EXIT_SUCCESS;
 }

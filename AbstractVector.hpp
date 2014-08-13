@@ -50,10 +50,10 @@ public:
 	virtual const_iterator begin() const = 0;
 	virtual const_iterator end() const = 0;
 
-protected:
 	// I/O
 	virtual void print(std::ostream& os, size_t index) const = 0;
 	virtual void scan(std::istream& is, size_t index) = 0;
+protected:
 	const size_t _LENGTH;
 };
 
