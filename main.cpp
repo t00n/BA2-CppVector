@@ -264,6 +264,46 @@ void strings()
 	cout << stringFalse << endl;
 }
 
+void iterators()
+{
+	cout << endl << "iterator <int, false>" << endl;
+	Vector<int, false> vector1(10);
+	vector1[0] = 1;
+	vector1[1] = 2;
+	vector1[2] = 4;
+	vector1[3] = 8;
+	for (Vector<int, false>::iterator it = vector1.begin();
+		it != vector1.end(); it++)
+	{
+		cout << *it << " ";
+	}
+	cout << endl << "iterator <int, true>" << endl;
+	Vector<int, true> vector2(10);
+	vector2[0] = 1;
+	vector2[1] = 2;
+	vector2[2] = 4;
+	vector2[3] = 8;
+	for (Vector<int, true>::iterator it = vector2.begin();
+		it != vector2.end(); it++)
+	{
+		cout << *it << " ";
+	}
+	cout << endl << "iterator <int*, ...>" << endl;
+	Vector<int*, true> vector3(10);
+	vector3[0] = new int(1);
+	vector3[1] = new int(2);
+	vector3[2] = new int(4);
+	vector3[3] = new int(8);
+	for (Vector<int*, true>::iterator it = vector3.begin();
+		it != vector3.end(); it++)
+	{
+		if (*it != nullptr)
+			cout << **it << " ";
+		else
+			cout << "nullptr" << " ";
+	}
+}
+
 int main()
 {
 	constructors(); // Ok
@@ -272,5 +312,6 @@ int main()
 	vStatic(); // Ok
 	sizeDifference(); // Ok
 	strings(); // Ok
+	iterators();
 	return EXIT_SUCCESS;
 }

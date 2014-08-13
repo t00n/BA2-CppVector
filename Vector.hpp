@@ -81,6 +81,26 @@ public:
 		return this->_data[index];
 	}
 
+	typename AbstractVector<T>::iterator begin()
+	{
+		return typename AbstractVector<T>::iterator(this->_data);
+	}
+
+	typename AbstractVector<T>::iterator end()
+	{
+		return typename AbstractVector<T>::iterator(this->_data + this->len());
+	}
+
+	typename AbstractVector<T>::const_iterator begin() const
+	{
+		return typename AbstractVector<T>::const_iterator(this->_data);
+	}
+
+	typename AbstractVector<T>::const_iterator end() const
+	{
+		return typename AbstractVector<T>::const_iterator(this->_data + this->len());
+	}
+
 protected:
 	virtual void print(std::ostream& os, size_t index) const
 	{
@@ -172,6 +192,26 @@ public:
 	const T& operator[](size_t index) const
 	{
 		return *(this->_data[index]);
+	}
+
+	typename AbstractVector<T>::iterator begin()
+	{
+		return typename AbstractVector<T>::iterator(this->_data[0]);
+	}
+
+	typename AbstractVector<T>::iterator end()
+	{
+		return typename AbstractVector<T>::iterator(this->_data[0] + this->len());
+	}
+
+	typename AbstractVector<T>::const_iterator begin() const
+	{
+		return typename AbstractVector<T>::const_iterator(this->_data[0]);
+	}
+
+	typename AbstractVector<T>::const_iterator end() const
+	{
+		return typename AbstractVector<T>::const_iterator(this->_data[0] + this->len());
 	}
 
 protected:
@@ -292,6 +332,26 @@ public:
 	T* const & operator[](size_t index) const
 	{
 		return this->_data[index];
+	}
+
+	typename AbstractVector<T*>::iterator begin()
+	{
+		return typename AbstractVector<T*>::iterator(this->_data);
+	}
+
+	typename AbstractVector<T*>::iterator end()
+	{
+		return typename AbstractVector<T*>::iterator(this->_data + this->len());
+	}
+
+	typename AbstractVector<T*>::const_iterator begin() const
+	{
+		return typename AbstractVector<T*>::const_iterator(this->_data);
+	}
+
+	typename AbstractVector<T*>::const_iterator end() const
+	{
+		return typename AbstractVector<T*>::const_iterator(this->_data + this->len());
 	}
 
 protected:
