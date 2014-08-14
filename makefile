@@ -1,3 +1,10 @@
+#
+# Antoine Carpentier
+# 000324440
+# BA2 informatique ULB 2013-2014
+# Langages de programmation 2 - INFO-F-202
+# Project C++
+
 HEAD=$(wildcard *.hpp)
 SRC=$(wildcard *.cpp)
 OBJ=$(SRC:.cpp=.o)
@@ -6,7 +13,7 @@ CPPFLAGS=-c -g -std=c++11 -Wpedantic -Wall -Wextra -Winit-self -Winline -Wconver
 -Wsign-promo -Wctor-dtor-privacy -Woverloaded-virtual -Wconversion \
 -Wstrict-null-sentinel -Wnoexcept -Wzero-as-null-pointer-constant
 LDFLAGS=
-CC=clang++
+CC=g++
 
 all: $(SRC) $(EXEC)
 	./$(EXEC)

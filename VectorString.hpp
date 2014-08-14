@@ -1,3 +1,11 @@
+/*
+ * Antoine Carpentier
+ * 000324440
+ * BA2 informatique ULB 2013-2014
+ * Langages de programmation 2 - INFO-F-202
+ * Project C++
+ */
+
 #ifndef __STRING_HPP
 #define __STRING_HPP
 

@@ -1,4 +1,16 @@
-#ifndef __ABSTRACT_VECTOR_HPP
+/*
+ * Antoine Carpentier
+ * 000324440
+ * BA2 informatique ULB 2013-2014
+ * Langages de programmation 2 - INFO-F-202
+ * Project C++
+ *
+ * AbstractVector.hpp
+ * Classe abstraite
+ * Stocke la taille du vecteur
+ */
+
+ #ifndef __ABSTRACT_VECTOR_HPP
 #define __ABSTRACT_VECTOR_HPP
 
 #include <cstddef>
@@ -21,12 +33,13 @@ public:
 	{
 	public:
 		iterator(T* ptr) : _ptr(ptr) { }
-		iterator operator++() { iterator i = *this; _ptr++; return i; }
+		iterator& operator++() { iterator& i = *this; _ptr++; return i; }
 		iterator operator++(int) { _ptr++; return *this; }
 		T& operator*() { return *_ptr; }
 		T* operator->() { return _ptr; }
 		bool operator==(const iterator& rhs) { return _ptr == rhs._ptr; }
 		bool operator!=(const iterator& rhs) { return _ptr != rhs._ptr; }
+		ptrdiff_t operator-(const iterator& rhs) { return _ptr - rhs._ptr; }
 	private:
 		T* _ptr;
 	};
@@ -35,7 +48,7 @@ public:
 	{
 	public:
 		const_iterator(T* ptr) : _ptr(ptr) { }
-		const_iterator operator++() { const_iterator i = *this; _ptr++; return i; }
+		const_iterator& operator++() { const_iterator i = *this; _ptr++; return i; }
 		const_iterator operator++(int) { _ptr++; return *this; }
 		const T* operator*() { return *_ptr; }
 		const T* operator->() { return _ptr; }

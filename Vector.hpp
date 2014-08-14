@@ -27,6 +27,30 @@ public:
 		}
 	}
 
+
+	VectorImpl(typename AbstractVector<T>::iterator beg, typename AbstractVector<T>::iterator end) : AbstractVector<T>(static_cast<size_t>(end-beg)), _data(new T[this->len()])
+	{
+		for (size_t i = 0; beg != end; ++i, ++beg)
+		{
+			(*this)[i] = *beg;
+		}
+	}
+
+	VectorImpl(typename AbstractVector<T*>::iterator beg, typename AbstractVector<T*>::iterator end) : AbstractVector<T>(static_cast<size_t>(end-beg)), _data(new T[this->len()])
+	{
+		for (size_t i = 0; beg != end; ++i, ++beg)
+		{
+			if (*beg != nullptr)
+			{
+				(*this)[i] = **beg;
+			}
+			else
+			{
+				(*this)[i] = T();
+			}
+		}
+	}
+
 	// Constructor from VectorImpl<T, ...> where T is any equivalent/convertible type
 	template <typename U>
 	VectorImpl(const AbstractVector<U>& other) : AbstractVector<T>(other.len()), _data(new T[other.len()])
@@ -133,6 +157,29 @@ public:
 		for (size_t i = 0; i < this->len(); ++i)
 		{
 			this->_data[i] = new T(other[i]);
+		}
+	}
+
+	VectorImpl(typename AbstractVector<T>::iterator beg, typename AbstractVector<T>::iterator end) : AbstractVector<T>(static_cast<size_t>(end-beg)), _data(new T*[this->len()])
+	{
+		for (size_t i = 0; beg != end; ++i, ++beg)
+		{
+			this->_data[i] = new T(*beg);
+		}
+	}
+
+	VectorImpl(typename AbstractVector<T*>::iterator beg, typename AbstractVector<T*>::iterator end) : AbstractVector<T>(static_cast<size_t>(end-beg)), _data(new T*[this->len()])
+	{
+		for (size_t i = 0; beg != end; ++i, ++beg)
+		{
+			if (*beg != nullptr)
+			{
+				this->_data[i] = new T(**beg);
+			}
+			else
+			{
+				this->_data[i] = new T();
+			}
 		}
 	}
 
@@ -251,6 +298,29 @@ public:
 			else
 			{
 				this->_data[i] = new T(*(other[i]));
+			}
+		}
+	}
+
+	VectorImpl(typename AbstractVector<T>::iterator beg, typename AbstractVector<T>::iterator end) : AbstractVector<T*>(static_cast<size_t>(end-beg)), _data(new T*[this->len()])
+	{
+		for (size_t i = 0; beg != end; ++i, ++beg)
+		{
+			this->_data[i] = new T(*beg);
+		}
+	}
+
+	VectorImpl(typename AbstractVector<T*>::iterator beg, typename AbstractVector<T*>::iterator end) : AbstractVector<T*>(static_cast<size_t>(end-beg)), _data(new T*[this->len()])
+	{
+		for (size_t i = 0; beg != end; ++i, ++beg)
+		{
+			if (*beg != nullptr)
+			{
+				this->_data[i] = new T(**beg);
+			}
+			else
+			{
+				this->_data[i] = nullptr;
 			}
 		}
 	}

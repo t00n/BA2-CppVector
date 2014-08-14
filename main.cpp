@@ -1,3 +1,14 @@
+/*
+ * Antoine Carpentier
+ * 000324440
+ * BA2 informatique ULB 2013-2014
+ * Langages de programmation 2 - INFO-F-202
+ * Project C++
+ *
+ * main.cpp:
+ * Contient les tests
+ */
+
 #include <iostream>
 #include <cstdlib>
 #include <cassert>
@@ -277,17 +288,6 @@ void iterators()
 	{
 		cout << *it << " ";
 	}
-	cout << endl << "iterator <int, true>" << endl;
-	Vector<int, true> vector2(10);
-	vector2[0] = 1;
-	vector2[1] = 2;
-	vector2[2] = 4;
-	vector2[3] = 8;
-	for (Vector<int, true>::iterator it = vector2.begin();
-		it != vector2.end(); it++)
-	{
-		cout << *it << " ";
-	}
 	cout << endl << "iterator <int*, ...>" << endl;
 	Vector<int*, true> vector3(10);
 	vector3[0] = new int(1);
@@ -302,6 +302,32 @@ void iterators()
 		else
 			cout << "nullptr" << " ";
 	}
+
+	Vector<int, false> intFalse1(vector3.begin(), vector3.end());
+	assert(intFalse1[0] == 1);
+	assert(intFalse1[1] == 2);
+	assert(intFalse1[2] == 4);
+	assert(intFalse1[3] == 8);
+	Vector<int, false> intFalse2(intFalse1.begin(), intFalse1.end());
+	assert(intFalse2[0] == 1);
+	assert(intFalse2[1] == 2);
+	assert(intFalse2[2] == 4);
+	assert(intFalse2[3] == 8);
+	Vector<int, true> intTrue1(intFalse1.begin(), intFalse1.end());
+	assert(intTrue1[0] == 1);
+	assert(intTrue1[1] == 2);
+	assert(intTrue1[2] == 4);
+	assert(intTrue1[3] == 8);
+	Vector<int*, false> intStar1(intFalse1.begin(), intFalse1.end());
+	assert(*(intStar1[0]) == 1);
+	assert(*(intStar1[1]) == 2);
+	assert(*(intStar1[2]) == 4);
+	assert(*(intStar1[3]) == 8);
+	Vector<int, true> intTrue2(intStar1.begin(), intStar1.end());
+	assert(intTrue2[0] == 1);
+	assert(intTrue2[1] == 2);
+	assert(intTrue2[2] == 4);
+	assert(intTrue2[3] == 8);
 }
 
 void integers()
@@ -316,6 +342,35 @@ void integers()
 	intTrue1 = intFalse1 + intStar1;
 	assert(intTrue1[0] == 2);
 	assert(intTrue1[1] == 4);
+	Vector<int, false> intFalse2(10);
+	intFalse2 = intStar1 + intTrue1;
+	assert(intFalse2[0] == 3);
+	assert(intFalse2[1] == 6);
+
+	Vector<int, true> intTrue2(10);
+	intTrue2 = intFalse1 - intFalse2;
+	assert(intTrue2[0] == -2);
+	assert(intTrue2[1] == -4);
+	assert(-intTrue2[0] == 2);
+	assert(-intTrue2[1] == 4);
+	assert(+intTrue2[0] == -2);
+	assert(+intTrue2[1] == -4);
+
+	double produit = intStar1 * intTrue1;
+	assert(produit == 10);
+	produit = intFalse1 * intFalse2;
+	assert(produit == 15);
+	produit = intFalse1 * intTrue1;
+	assert(produit == 10);
+
+	Vector<int, false> intFalse3(10);
+	intFalse3[0] = 9;
+	intFalse3[1] = 12;
+	assert(intFalse3.norm() == 15);
+	Vector<int*, false> intStar2(10);
+	intStar2 = 7*intFalse3;
+	assert(*(intStar2[0]) == 63);
+	assert(*(intStar2[1]) == 84);
 }
 
 int main()
